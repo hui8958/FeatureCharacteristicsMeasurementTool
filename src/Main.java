@@ -25,7 +25,7 @@ public class Main {
         // TODO code application logic here
 //-------------------------------- 
         File folder = new File("C:\\Github\\Marlin\\Marlin");
-          String featureName = "PRINTCOUNTER";
+          String featureName = "PWM_Fans";
           String keyWordForSD="#if";
            String keyWordForTD="#if";
 //---------------------------------    
@@ -64,8 +64,8 @@ public class Main {
                         }else if(line.contains(endAnnotation)){
                             pairEnd = counter;
                             System.out.println(listOfFiles[i].getAbsolutePath()+" find end at "+counter);
-                            totalLOC += pairEnd-pairBegin;
-                            System.out.println("Add number of LOC "+ (pairEnd-pairBegin));
+                            totalLOC += pairEnd-pairBegin-1;
+                            System.out.println("Add number of LOC --------"+ (pairEnd-pairBegin-1	));
                             pairBegin=0;
                             pairEnd=0;
                             BTD = false;
