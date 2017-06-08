@@ -25,7 +25,7 @@ public class Main {
         // TODO code application logic here
 //-------------------------------- 
         File folder = new File("C:\\Github\\Marlin\\Marlin");
-          String featureName = "PWM_Fans";
+          String featureName = "HAVE_TMC2130DRIVER";
           String keyWordForSD="#if";
            String keyWordForTD="#if";
 //---------------------------------    
@@ -36,16 +36,21 @@ public class Main {
          int pairBegin = 0;
          int pairEnd = 0;
          int totalLOC = 0;
-         int SD=0;
+         int totalSD=0;
          int TD = 0;
          int tempSD = 0;
          boolean BSD = false;
          boolean BTD = false;
          int currentEndIfIndex = 0;
+         int NoPerviousIf = 0;
+         int NoPerviousEndIf = 0;
+         int annotationCounter = 0;
         for (int i = 0; i < listOfFiles.length; i++) {
             counter =0;
             pairBegin = 0;
              pairEnd = 0;
+             NoPerviousIf =0;
+             NoPerviousEndIf = 0;
             if (listOfFiles[i].isFile()) {
                 //System.out.println("File " + listOfFiles[i].getName());
 
@@ -55,12 +60,18 @@ public class Main {
                         // process the line.
                       //  System.out.println(line);
                         if(line.contains(beginAnnotation)){
-                            System.out.println("Pervious #endif located at: "+currentEndIfIndex+", total #if in between:"+tempSD);
+                         //   System.out.println("Pervious #endif located at: "+currentEndIfIndex+", total #if in between:"+tempSD);
+                            
+                            System.out.println("Current SD " +(NoPerviousIf-NoPerviousEndIf)+" = Pervious #if ("+NoPerviousIf+") - Pervious #endif ("+NoPerviousEndIf+")"); 
                             pairBegin = counter;
                             BTD = true;
-                            BSD = false;
-                            SD+=tempSD;
+                          //  BSD = false;
+                            
+                            totalSD+=(NoPerviousIf-NoPerviousEndIf);
+                            
+                            annotationCounter++;
                             System.out.println(listOfFiles[i].getAbsolutePath()+" find begin at "+counter);
+                            
                         }else if(line.contains(endAnnotation)){
                             pairEnd = counter;
                             System.out.println(listOfFiles[i].getAbsolutePath()+" find end at "+counter);
@@ -75,15 +86,24 @@ public class Main {
                                 TD++;
                             
                         }
-                        if(line.contains("#endif")){
+                     /*   if(line.contains("#endif")){
                             currentEndIfIndex = counter;
                             BSD = true;
                             tempSD = 0;
                         }
-                        if(BSD&&line.contains(keyWordForSD)){
+                        
+                        if(BSD&&line.contains("#endif")){
                         
                             tempSD++;
                         }
+                       */ 
+                        
+                        if(line.contains("#if")){
+                        	NoPerviousIf++;
+                        }else if(line.contains("#endif")){
+                        	NoPerviousEndIf++;
+                        }
+                        
                       counter++;
                       
                     }
@@ -98,7 +118,7 @@ public class Main {
         }
         System.out.println("Total LOF for ["+featureName+"] is " + totalLOC);
         System.out.println("TD:" + TD);
-        System.out.println("SD:" + SD);
+        System.out.println("SD:" + totalSD/annotationCounter);
         
     }
 
