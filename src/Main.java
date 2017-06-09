@@ -112,10 +112,10 @@ public class Main {
 							BTD = true;
 							totalSD += (NoPerviousIf - NoPerviousEndIf);
 							annotationCounter++;
-							 System.out.println("<<<<"+listOfFiles[i].getAbsolutePath()+"find begin at "+counter); //Uncoment to show LOF
+							// System.out.println("<<<<"+listOfFiles[i].getAbsolutePath()+"find begin at "+counter); //Uncoment to show LOF
 						} else if (line.contains(endAnnotation)) {
 							pairEnd = counter;
-							 System.out.println("-----"+listOfFiles[i].getAbsolutePath()+"find end at "+counter); //Uncoment to show LOF
+							// System.out.println("-----"+listOfFiles[i].getAbsolutePath()+"find end at "+counter); //Uncoment to show LOF
 							totalLOC += pairEnd - pairBegin - 1;
 							pairBegin = 0;
 							pairEnd = 0;
