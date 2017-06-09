@@ -29,7 +29,6 @@ public class Main {
 	String featureName = "HAVE_TMC2130DRIVER"; // not reqiured in multiple mode
 	String keyWordForIf = "#if";
 	ArrayList<Feature> features = new ArrayList<Feature>();
-	ArrayList<Integer> featuresFiles = new ArrayList<Integer>();
 	public static void main(String[] args) {
 		// TODO code application logic here
 		Main main = new Main();
