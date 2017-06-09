@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -24,11 +25,11 @@ public class Main {
 	 * @param args
 	 *            the command line arguments
 	 */
-	File folder = new File("/Users/wanziguelva/Marlin/Marlin");
-	String featureName = "HAVE_TMC2130DRIVER"; //not reqiured in multiple mode
+	static File folder = new File("C:\\Github\\Marlin\\Marlin");
+	String featureName = "HAVE_TMC2130DRIVER"; // not reqiured in multiple mode
 	String keyWordForIf = "#if";
-	ArrayList<String> features = new ArrayList<String>();
-
+	ArrayList<Feature> features = new ArrayList<Feature>();
+	ArrayList<Integer> featuresFiles = new ArrayList<Integer>();
 	public static void main(String[] args) {
 		// TODO code application logic here
 		Main main = new Main();
@@ -39,15 +40,16 @@ public class Main {
 		/**
 		 * Uncomment for multiple feature analyze (Require clafer)
 		 */
-		
-		  AddFeaturesToList(); for(String name:features){
-		  analyiseCharacteristic(name, folder, keyWordForIf); }
-		
+
+		AddFeaturesToList();
+		for (Feature feature : features) {
+			analyiseCharacteristic(feature.name,feature.fileCounter, folder, keyWordForIf);
+		}
 
 		/**
 		 * Uncomment for single feaure analyze
 		 */
-		 //analyiseCharacteristic(featureName, folder, keyWordForIf);
+		// analyiseCharacteristic(featureName, folder, keyWordForIf);
 
 	}
 
@@ -56,18 +58,16 @@ public class Main {
 		try (BufferedReader br = new BufferedReader(
 				new FileReader(new File(folder.getAbsolutePath() + "/.vp-project")))) {
 			for (String line; (line = br.readLine()) != null;) {
-				String oneLine = line.trim().replace("xor ", "");
-				if (oneLine.contains(" ")) {
-					oneLine = oneLine.substring(0, oneLine.indexOf(" "));
-					features.add(oneLine);
+				if (!line.contains("Marlin")) {
+					Feature feature;
+					String oneLine = line.trim().replace("xor ", "");
+					if (oneLine.contains(" ")) {
+						oneLine = oneLine.substring(0, oneLine.indexOf(" "));
+					} 
+					feature = new Feature(oneLine);
+					features.add(feature);
 					featureCounter++;
 					System.out.println("Add feature: [" + oneLine + "]");
-				} else {
-					if (!oneLine.contains("Marlin")){
-					features.add(oneLine);
-					featureCounter++;
-					System.out.println("Add feature: [" + oneLine + "]");
-					}
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -80,7 +80,7 @@ public class Main {
 		System.out.println("Total Number of Features: " + featureCounter);
 	}
 
-	private void analyiseCharacteristic(String featureName, File folder, String keyWordForIf) {
+	private void analyiseCharacteristic(String featureName, int fileCounter,File folder, String keyWordForIf) {
 		File[] listOfFiles = folder.listFiles();
 		String beginAnnotation = "//&begin[" + featureName + "]";
 		String endAnnotation = "//&end[" + featureName + "]";
@@ -113,12 +113,10 @@ public class Main {
 							BTD = true;
 							totalSD += (NoPerviousIf - NoPerviousEndIf);
 							annotationCounter++;
-							// System.out.println(listOfFiles[i].getAbsolutePath()+"
-							// find begin at "+counter); //Uncoment to show LOF
+							 System.out.println("<<<<"+listOfFiles[i].getAbsolutePath()+"find begin at "+counter); //Uncoment to show LOF
 						} else if (line.contains(endAnnotation)) {
 							pairEnd = counter;
-							// System.out.println(listOfFiles[i].getAbsolutePath()+"
-							// find end at "+counter); //Uncoment to show LOF
+							 System.out.println("-----"+listOfFiles[i].getAbsolutePath()+"find end at "+counter); //Uncoment to show LOF
 							totalLOC += pairEnd - pairBegin - 1;
 							pairBegin = 0;
 							pairEnd = 0;
@@ -146,17 +144,19 @@ public class Main {
 			}
 
 		}
+			if(totalLOC>0){
 		System.out.println("Feature Annotation: [" + featureName + "]");
-		System.out.println("LOF:" + totalLOC);
-		System.out.println("NOFL:" + annotationCounter );
-		System.out.println("TD:" + TD);
+		System.out.println("LOF: " + totalLOC);
+		System.out.println("NOFL: " + (annotationCounter+fileCounter) + "(Annotation: "+ annotationCounter+"|file: "+fileCounter+")");
+		System.out.println("TD: " + TD);
 		if (annotationCounter > 0) {
-			System.out.println("Avg. SD:" + totalSD / annotationCounter);
+			System.out.println("Avg. SD: " + totalSD / annotationCounter);
 		} else {
 
-			System.out.println("Avg. SD:" + totalSD);
+			System.out.println("Avg. SD: " + totalSD);
 		}
 		System.out.println("--------------End-----------------");
+			}
 
 	}
 
