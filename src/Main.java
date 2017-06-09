@@ -24,7 +24,7 @@ public class Main {
 	 * @param args
 	 *            the command line arguments
 	 */
-	File folder = new File("C:\\Github\\Marlin\\Marlin");
+	File folder = new File("/Users/wanziguelva/Marlin/Marlin");
 	String featureName = "HAVE_TMC2130DRIVER"; //not reqiured in multiple mode
 	String keyWordForIf = "#if";
 	ArrayList<String> features = new ArrayList<String>();
@@ -47,12 +47,12 @@ public class Main {
 		/**
 		 * Uncomment for single feaure analyze
 		 */
-		// analyiseCharacteristic(featureName, folder, keyWordForIf);
+		 //analyiseCharacteristic(featureName, folder, keyWordForIf);
 
 	}
 
 	private void AddFeaturesToList() {
-
+		int featureCounter = 0;
 		try (BufferedReader br = new BufferedReader(
 				new FileReader(new File(folder.getAbsolutePath() + "/.vp-project")))) {
 			for (String line; (line = br.readLine()) != null;) {
@@ -60,10 +60,15 @@ public class Main {
 				if (oneLine.contains(" ")) {
 					oneLine = oneLine.substring(0, oneLine.indexOf(" "));
 					features.add(oneLine);
+					featureCounter++;
+					System.out.println("Add feature: [" + oneLine + "]");
 				} else {
+					if (!oneLine.contains("Marlin")){
 					features.add(oneLine);
+					featureCounter++;
+					System.out.println("Add feature: [" + oneLine + "]");
+					}
 				}
-				System.out.println("Add feature: [" + oneLine + "]");
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -72,6 +77,7 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Total Number of Features: " + featureCounter);
 	}
 
 	private void analyiseCharacteristic(String featureName, File folder, String keyWordForIf) {
@@ -142,6 +148,7 @@ public class Main {
 		}
 		System.out.println("Feature Annotation: [" + featureName + "]");
 		System.out.println("LOF:" + totalLOC);
+		System.out.println("NOFL:" + annotationCounter );
 		System.out.println("TD:" + TD);
 		if (annotationCounter > 0) {
 			System.out.println("Avg. SD:" + totalSD / annotationCounter);
