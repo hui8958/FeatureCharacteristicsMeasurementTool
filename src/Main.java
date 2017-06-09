@@ -38,10 +38,7 @@ public class Main {
          int totalLOC = 0;
          int totalSD=0;
          int TD = 0;
-         int tempSD = 0;
-         boolean BSD = false;
          boolean BTD = false;
-         int currentEndIfIndex = 0;
          int NoPerviousIf = 0;
          int NoPerviousEndIf = 0;
          int annotationCounter = 0;
@@ -52,31 +49,20 @@ public class Main {
              NoPerviousIf =0;
              NoPerviousEndIf = 0;
             if (listOfFiles[i].isFile()) {
-                //System.out.println("File " + listOfFiles[i].getName());
-
                 try (BufferedReader br = new BufferedReader(new FileReader(listOfFiles[i].getAbsoluteFile()))) {
                     String line;
                     while ((line = br.readLine()) != null) {
-                        // process the line.
-                      //  System.out.println(line);
                         if(line.contains(beginAnnotation)){
-                         //   System.out.println("Pervious #endif located at: "+currentEndIfIndex+", total #if in between:"+tempSD);
-                            
-                            System.out.println("Current SD " +(NoPerviousIf-NoPerviousEndIf)+" = Pervious #if ("+NoPerviousIf+") - Pervious #endif ("+NoPerviousEndIf+")"); 
+                          System.out.println("Current SD " +(NoPerviousIf-NoPerviousEndIf)+" = Pervious #if ("+NoPerviousIf+") - Pervious #endif ("+NoPerviousEndIf+")"); 
                             pairBegin = counter;
                             BTD = true;
-                          //  BSD = false;
-                            
                             totalSD+=(NoPerviousIf-NoPerviousEndIf);
-                            
                             annotationCounter++;
                             System.out.println(listOfFiles[i].getAbsolutePath()+" find begin at "+counter);
-                            
                         }else if(line.contains(endAnnotation)){
                             pairEnd = counter;
                             System.out.println(listOfFiles[i].getAbsolutePath()+" find end at "+counter);
                             totalLOC += pairEnd-pairBegin-1;
-                            System.out.println("Add number of LOC --------"+ (pairEnd-pairBegin-1	));
                             pairBegin=0;
                             pairEnd=0;
                             BTD = false;
@@ -84,28 +70,14 @@ public class Main {
                         if(BTD&&line.contains(keyWordForTD)){
                             System.out.println(listOfFiles[i].getName()+" find TD: "+line);
                                 TD++;
-                            
-                        }
-                     /*   if(line.contains("#endif")){
-                            currentEndIfIndex = counter;
-                            BSD = true;
-                            tempSD = 0;
                         }
                         
-                        if(BSD&&line.contains("#endif")){
-                        
-                            tempSD++;
-                        }
-                       */ 
-                        
-                        if(line.contains("#if")){
+                        if(line.contains(keyWordForSD)){
                         	NoPerviousIf++;
                         }else if(line.contains("#endif")){
                         	NoPerviousEndIf++;
                         }
-                        
                       counter++;
-                      
                     }
                 } catch (Exception E) {
                     System.out.println("error");
@@ -116,9 +88,11 @@ public class Main {
             }
             
         }
-        System.out.println("Total LOF for ["+featureName+"] is " + totalLOC);
+        System.out.println("------Feature characteristic statistics------");
+        System.out.println("Feature Annotation: ["+featureName+"]");
+        System.out.println("LOF:" + totalLOC);
         System.out.println("TD:" + TD);
-        System.out.println("SD:" + totalSD/annotationCounter);
+        System.out.println("Avg. SD:" + totalSD/annotationCounter);
         
     }
 
