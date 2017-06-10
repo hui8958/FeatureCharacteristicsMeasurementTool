@@ -54,7 +54,7 @@ public class FeatureAnalyze {
 		try (BufferedReader br = new BufferedReader(
 				new FileReader(new File(folder.getAbsolutePath() + "/.vp-project")))) {
 			for (String line; (line = br.readLine()) != null;) {
-				if (!line.contains("Marlin")) {
+				if (!line.toLowerCase().contains("Marlin".toLowerCase())) {
 					Feature feature;
 					String oneLine = line.trim().replace("xor ", "");
 					if (oneLine.contains(" ")) {

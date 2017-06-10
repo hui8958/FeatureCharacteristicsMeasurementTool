@@ -27,7 +27,7 @@ class Feature {
 						 tempFileName = line;
 						//System.out.println("File name: "+line);
 					}else{
-						if(line.equals(name)){
+						if(line.equalsIgnoreCase(name)){
 							fileNames.add(tempFileName);
 							;
 						}	
@@ -73,7 +73,7 @@ class Feature {
 				try (BufferedReader br = new BufferedReader(new FileReader(listOfFiles[i].getAbsoluteFile()))) {
 					String line;
 					while ((line = br.readLine()) != null) {
-						if (line.contains(beginAnnotation)) {
+						if (line.toLowerCase().contains(beginAnnotation.toLowerCase())) {
 							// System.out.println("Current SD "
 							// +(NoPerviousIf-NoPerviousEndIf)+"= Pervious #if
 							// ("+NoPerviousIf+") - Pervious #endif
@@ -84,7 +84,7 @@ class Feature {
 							annotationCounter++;
 							// System.out.println("<<<<"+listOfFiles[i].getAbsolutePath()+"find
 							// begin at "+counter); //Uncoment to show LOF
-						} else if (line.contains(endAnnotation)) {
+						} else if (line.toLowerCase().contains(endAnnotation.toLowerCase())) {
 							pairEnd = counter;
 							// System.out.println("-----"+listOfFiles[i].getAbsolutePath()+"find
 							// end at "+counter); //Uncoment to show LOF
@@ -93,15 +93,15 @@ class Feature {
 							pairEnd = 0;
 							BTD = false;
 						}
-						if (BTD && line.contains(keyWordForIf)) {
+						if (BTD && line.toLowerCase().contains(keyWordForIf.toLowerCase())) {
 							// System.out.println(listOfFiles[i].getName()+"
 							// find TD: "+line); //Uncoment to show TD
 							TD++;
 						}
 
-						if (line.contains(keyWordForIf)) {
+						if (line.toLowerCase().contains(keyWordForIf.toLowerCase())) {
 							NoPerviousIf++;
-						} else if (line.contains("#endif")) {
+						} else if (line.toLowerCase().contains("#endif")) {
 							NoPerviousEndIf++;
 						}
 						counter++;
