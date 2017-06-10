@@ -44,10 +44,8 @@ public class Main {
 					counter++;
 				}
 			}
-			// 写入数据并关闭文件
 			book.write();
 			book.close();
-
 		} catch (Exception e) {
 			System.out.println(e);
 		}

@@ -9,16 +9,13 @@ class Feature {
 
 	String name ;
 	ArrayList<String> fileNames = new ArrayList<String> () ;
-
 	int LOF = 0;
-
 	int NOFL = 0;
 	int annotation = 0;
 	int fileCounter = 0;
 	int TD = 0;
 	int avgSD = 0;
-	
-	
+		
 	public Feature(String name){
 		this.name = name;
 		int counter =0;
