@@ -9,14 +9,22 @@ class Feature {
 
 	String name ;
 	ArrayList<String> fileNames = new ArrayList<String> () ;
+
+	int LOF = 0;
+
+	int NOFL = 0;
+	int annotation = 0;
 	int fileCounter = 0;
+	int TD = 0;
+	int avgSD = 0;
+	
 	
 	public Feature(String name){
 		this.name = name;
 		int counter =0;
 		String tempFileName = "";
 		try (BufferedReader br = new BufferedReader(
-				new FileReader(new File(Main.folder.getAbsolutePath() + "/.vp-files")))) {
+				new FileReader(new File(FeatureAnalyze.folder.getAbsolutePath() + "/.vp-files")))) {
 			for (String line; (line = br.readLine()) != null;) {
 					if(counter%2 ==0){
 						 tempFileName = line;
@@ -43,4 +51,127 @@ class Feature {
 	public int getFileSize(){
 		return fileCounter;
 	}
+	
+	public void analyiseCharacteristic(String featureName, int fileCounter, File folder, String keyWordForIf) {
+		File[] listOfFiles = folder.listFiles();
+		String beginAnnotation = "//&begin[" + featureName + "]";
+		String endAnnotation = "//&end[" + featureName + "]";
+		int counter = 0;
+		int pairBegin = 0;
+		int pairEnd = 0;
+		int totalLOC = 0;
+		int totalSD = 0;
+		int TD = 0;
+		boolean BTD = false;
+		int NoPerviousIf = 0;
+		int NoPerviousEndIf = 0;
+		int annotationCounter = 0;
+		for (int i = 0; i < listOfFiles.length; i++) {
+			counter = 0;
+			pairBegin = 0;
+			pairEnd = 0;
+			NoPerviousIf = 0;
+			NoPerviousEndIf = 0;
+			if (listOfFiles[i].isFile()) {
+				try (BufferedReader br = new BufferedReader(new FileReader(listOfFiles[i].getAbsoluteFile()))) {
+					String line;
+					while ((line = br.readLine()) != null) {
+						if (line.contains(beginAnnotation)) {
+							// System.out.println("Current SD "
+							// +(NoPerviousIf-NoPerviousEndIf)+"= Pervious #if
+							// ("+NoPerviousIf+") - Pervious #endif
+							// ("+NoPerviousEndIf+")"); //Uncoment to show SD
+							pairBegin = counter;
+							BTD = true;
+							totalSD += (NoPerviousIf - NoPerviousEndIf);
+							annotationCounter++;
+							// System.out.println("<<<<"+listOfFiles[i].getAbsolutePath()+"find
+							// begin at "+counter); //Uncoment to show LOF
+						} else if (line.contains(endAnnotation)) {
+							pairEnd = counter;
+							// System.out.println("-----"+listOfFiles[i].getAbsolutePath()+"find
+							// end at "+counter); //Uncoment to show LOF
+							totalLOC += pairEnd - pairBegin - 1;
+							pairBegin = 0;
+							pairEnd = 0;
+							BTD = false;
+						}
+						if (BTD && line.contains(keyWordForIf)) {
+							// System.out.println(listOfFiles[i].getName()+"
+							// find TD: "+line); //Uncoment to show TD
+							TD++;
+						}
+
+						if (line.contains(keyWordForIf)) {
+							NoPerviousIf++;
+						} else if (line.contains("#endif")) {
+							NoPerviousEndIf++;
+						}
+						counter++;
+					}
+				} catch (Exception E) {
+					System.out.println("error");
+				}
+
+			} else if (listOfFiles[i].isDirectory()) {
+				// System.out.println("Directory " + listOfFiles[i].getName());
+			}
+
+		}
+		if (totalLOC > 0) {
+			System.out.println("Feature Annotation: [" + featureName + "]");
+			System.out.println("LOF: " + totalLOC);
+			LOF = totalLOC;
+			System.out.println("NOFL: " + (annotationCounter + fileCounter) + "(Annotation: " + annotationCounter
+					+ "|file: " + fileCounter + ")");
+			NOFL = (annotationCounter + fileCounter);
+			annotation = annotationCounter;
+			System.out.println("TD: " + TD);
+			this.TD =TD; 
+			if (annotationCounter > 0) {
+				System.out.println("Avg. SD: " + totalSD / annotationCounter);
+				this.avgSD =  totalSD / annotationCounter;
+			} else {
+
+				System.out.println("Avg. SD: " + totalSD);
+				this.avgSD =  totalSD;
+			}
+			System.out.println("--------------End-----------------");
+		}
+		
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public ArrayList<String> getFileNames() {
+		return fileNames;
+	}
+
+	public int getLOF() {
+		return LOF;
+	}
+
+	public int getNOFL() {
+		return NOFL;
+	}
+
+	public int getAnnotation() {
+		return annotation;
+	}
+
+	public int getFileCounter() {
+		return fileCounter;
+	}
+
+	public int getTD() {
+		return TD;
+	}
+
+	public int getAvgSD() {
+		return avgSD;
+	}
+
+	
 }
