@@ -9,15 +9,20 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		new Main();
+	}
+
+	public Main(){
 		int counter =1;
-		FeatureAnalyze featureAnalyze = new FeatureAnalyze("C:\\Github\\Marlin\\Marlin", "#if");
+		String location = "/Users/hui/Documents/Github/Marlin/Marlin";
+		FeatureAnalyze featureAnalyze = new FeatureAnalyze(location, "#if");
 		try {
-			// ´ò¿ªÎÄ¼þ
+			// ï¿½ï¿½ï¿½Ä¼ï¿½
 			WritableWorkbook book = Workbook.createWorkbook(new File("Features.xls"));
 
 			WritableSheet sheet = book.createSheet("Sheet1", 0);
-			// ÔÚLabel¶ÔÏóµÄ¹¹Ôì×ÓÖÐÖ¸Ãûµ¥Ôª¸ñÎ»ÖÃÊÇµÚÒ»ÁÐµÚÒ»ÐÐ(0,0)
-			// ÒÔ¼°µ¥Ôª¸ñÄÚÈÝÎªtest
+			// ï¿½ï¿½Labelï¿½ï¿½ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½Î»ï¿½ï¿½ï¿½Çµï¿½Ò»ï¿½Ðµï¿½Ò»ï¿½ï¿½(0,0)
+			// ï¿½Ô¼ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªtest
 			Label label1 = new Label(0, 0, "Feature Name");
 			Label label2 = new Label(1, 0, "LOF");
 			Label label3 = new Label(2, 0, "NOFL");
@@ -50,5 +55,6 @@ public class Main {
 			System.out.println(e);
 		}
 	}
-
+	
+	
 }
