@@ -17,12 +17,9 @@ public class Main {
 		String location = "/Users/hui/Documents/Github/Marlin/Marlin";
 		FeatureAnalyze featureAnalyze = new FeatureAnalyze(location, "#if");
 		try {
-			// ���ļ�
-			WritableWorkbook book = Workbook.createWorkbook(new File("Features.xls"));
 
+			WritableWorkbook book = Workbook.createWorkbook(new File("Features.xls"));
 			WritableSheet sheet = book.createSheet("Sheet1", 0);
-			// ��Label����Ĺ�������ָ����Ԫ��λ���ǵ�һ�е�һ��(0,0)
-			// �Լ���Ԫ������Ϊtest
 			Label label1 = new Label(0, 0, "Feature Name");
 			Label label2 = new Label(1, 0, "LOF");
 			Label label3 = new Label(2, 0, "NOFL");
