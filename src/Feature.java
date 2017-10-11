@@ -25,7 +25,6 @@ class Feature {
 			for (String line; (line = br.readLine()) != null;) {
 					if(counter%2 ==0){
 						 tempFileName = line;
-						//System.out.println("File name: "+line);
 					}else{
 						if(line.equalsIgnoreCase(name)){
 							fileNames.add(tempFileName);
@@ -74,28 +73,18 @@ class Feature {
 					String line;
 					while ((line = br.readLine()) != null) {
 						if (line.toLowerCase().contains(beginAnnotation.toLowerCase())) {
-							// System.out.println("Current SD "
-							// +(NoPerviousIf-NoPerviousEndIf)+"= Pervious #if
-							// ("+NoPerviousIf+") - Pervious #endif
-							// ("+NoPerviousEndIf+")"); //Uncoment to show SD
 							pairBegin = counter;
 							BTD = true;
 							totalSD += (NoPerviousIf - NoPerviousEndIf);
 							annotationCounter++;
-							// System.out.println("<<<<"+listOfFiles[i].getAbsolutePath()+"find
-							// begin at "+counter); //Uncoment to show LOF
 						} else if (line.toLowerCase().contains(endAnnotation.toLowerCase())) {
 							pairEnd = counter;
-							// System.out.println("-----"+listOfFiles[i].getAbsolutePath()+"find
-							// end at "+counter); //Uncoment to show LOF
 							totalLOC += pairEnd - pairBegin - 1;
 							pairBegin = 0;
 							pairEnd = 0;
 							BTD = false;
 						}
 						if (BTD && line.toLowerCase().contains(keyWordForIf.toLowerCase())) {
-							// System.out.println(listOfFiles[i].getName()+"
-							// find TD: "+line); //Uncoment to show TD
 							TD++;
 						}
 
