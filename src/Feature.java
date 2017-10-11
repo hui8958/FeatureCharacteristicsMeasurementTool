@@ -25,7 +25,6 @@ class Feature {
 			for (String line; (line = br.readLine()) != null;) {
 					if(counter%2 ==0){
 						 tempFileName = line;
-						//System.out.println("File name: "+line);
 					}else{
 						if(line.equalsIgnoreCase(name)){
 							fileNames.add(tempFileName);
@@ -80,6 +79,7 @@ class Feature {
 							// +(NoPerviousIf-NoPerviousEndIf)+"= Pervious #if
 							// ("+NoPerviousIf+") - Pervious #endif
 							// ("+NoPerviousEndIf+")"); //Uncoment to show ND
+
 							pairBegin = counter;
 							BTD = true;
 							System.out.println("Start Searching for TD");
@@ -90,12 +90,8 @@ class Feature {
 							}*/
 							
 							annotationCounter++;
-							// System.out.println("<<<<"+listOfFiles[i].getAbsolutePath()+"find
-							// begin at "+counter); //Uncoment to show LOF
 						} else if (line.toLowerCase().contains(endAnnotation.toLowerCase())) {
 							pairEnd = counter;
-							// System.out.println("-----"+listOfFiles[i].getAbsolutePath()+"find
-							// end at "+counter); //Uncoment to show LOF
 							totalLOC += pairEnd - pairBegin - 1;
 							pairBegin = 0;
 							pairEnd = 0;
