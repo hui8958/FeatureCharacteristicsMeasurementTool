@@ -28,7 +28,6 @@ class Feature {
 					}else{
 						if(line.equalsIgnoreCase(name)){
 							fileNames.add(tempFileName);
-							;
 						}	
 					}
 				
