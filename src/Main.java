@@ -1,4 +1,6 @@
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 
 import jxl.Workbook;
 import jxl.write.Label;
@@ -14,21 +16,21 @@ public class Main {
 
 	public Main(){
 		int counter =1;
-		String location = "/Users/hui/Documents/Github/Marlin/Marlin";
-		FeatureAnalyze featureAnalyze = new FeatureAnalyze(location, "#ifdef");
+		String location = "D:/Github/Marlin/Marlin";
+		String excelName = "Features.xls";
+		FeatureAnalyze featureAnalyze = new FeatureAnalyze(location, "#if");
 		try {
-			WritableWorkbook book = Workbook.createWorkbook(new File("Features.xls"));
+
+			WritableWorkbook book = Workbook.createWorkbook(new File(excelName));
 			WritableSheet sheet = book.createSheet("Sheet1", 0);
-			Label label1 = new Label(0, 0, "Feature Name");
-			Label label2 = new Label(1, 0, "LOF");
+			Label label1 = new Label(0, 0, "Annotation Name");
+			Label label2 = new Label(1, 0, "LoFC");
 			Label label3 = new Label(2, 0, "SD");
 			Label label4 = new Label(3, 0, "TD");
-			Label label5 = new Label(4, 0, "Avg.ND");
 			sheet.addCell(label1);
 			sheet.addCell(label2);
 			sheet.addCell(label3);
 			sheet.addCell(label4);
-			sheet.addCell(label5);
 			for (int i = 0; i < featureAnalyze.features.size(); i++) {
 				Feature tempFeature = featureAnalyze.features.get(i);
 				if (tempFeature.getLOF() > 0) {
@@ -36,17 +38,17 @@ public class Main {
 					jxl.write.Number label7 = new jxl.write.Number(1, counter, tempFeature.getLOF());
 					jxl.write.Number label8 = new jxl.write.Number(2, counter, tempFeature.getSD());
 					jxl.write.Number label9 = new jxl.write.Number(3, counter, tempFeature.getTD());
-					jxl.write.Number label0 = new jxl.write.Number(4, counter, tempFeature.getAvgND());
+
 					sheet.addCell(label6);
 					sheet.addCell(label7);
 					sheet.addCell(label8);
 					sheet.addCell(label9);
-					sheet.addCell(label0);
 					counter++;
 				}
 			}
 			book.write();
 			book.close();
+			Desktop.getDesktop().open(new File(excelName));
 		} catch (Exception e) {
 			System.out.println(e);
 		}
