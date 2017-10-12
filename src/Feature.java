@@ -10,11 +10,10 @@ class Feature {
 	String name ;
 	ArrayList<String> fileNames = new ArrayList<String> () ;
 	int LOF = 0;
-	int NOFL = 0;
+	int SD = 0;
 	int annotation = 0;
 	int fileCounter = 0;
 	int TD = 0;
-	int avgSD = 0;
 		
 	public Feature(String name){
 		this.name = name;
@@ -47,26 +46,22 @@ class Feature {
 		return fileCounter;
 	}
 	
-	public void analyiseCharacteristic(String featureName, int fileCounter, File folder, String keyWordForIf) {
+	public void analyiseCharacteristic(String AnnotationName, int fileCounter, File folder, String keyWordForIf) {
 		File[] listOfFiles = folder.listFiles();
-		String beginAnnotation = "//&begin[" + featureName + "]";
-		String endAnnotation = "//&end[" + featureName + "]";
+		String beginAnnotation = "//&begin[" + AnnotationName + "]";
+		String endAnnotation = "//&end[" + AnnotationName + "]";
 		int counter = 0;
 		int pairBegin = 0;
 		int pairEnd = 0;
 		int totalLOC = 0;
-		int totalSD = 0;
 		int TD = 0;
 		boolean BTD = false;
-		int NoPerviousIf = 0;
-		int NoPerviousEndIf = 0;
 		int annotationCounter = 0;
 		for (int i = 0; i < listOfFiles.length; i++) {
 			counter = 0;
 			pairBegin = 0;
 			pairEnd = 0;
-			NoPerviousIf = 0;
-			NoPerviousEndIf = 0;
+
 			if (listOfFiles[i].isFile()) {
 				try (BufferedReader br = new BufferedReader(new FileReader(listOfFiles[i].getAbsoluteFile()))) {
 					String line;
@@ -74,7 +69,6 @@ class Feature {
 						if (line.toLowerCase().contains(beginAnnotation.toLowerCase())) {
 							pairBegin = counter;
 							BTD = true;
-							totalSD += (NoPerviousIf - NoPerviousEndIf);
 							annotationCounter++;
 						} else if (line.toLowerCase().contains(endAnnotation.toLowerCase())) {
 							pairEnd = counter;
@@ -82,15 +76,10 @@ class Feature {
 							pairBegin = 0;
 							pairEnd = 0;
 							BTD = false;
-						}
-						if (BTD && line.toLowerCase().contains(keyWordForIf.toLowerCase())) {
+							System.out.println("End Searching for TD");
+						}else if (BTD && (line.toLowerCase().contains("#if enable")||line.toLowerCase().contains("#ifdef"))&&!line.toLowerCase().contains(AnnotationName.toLowerCase())) {
+							 System.out.println(listOfFiles[i].getName()+" find TD: "+line); //Uncoment to show TD
 							TD++;
-						}
-
-						if (line.toLowerCase().contains(keyWordForIf.toLowerCase())) {
-							NoPerviousIf++;
-						} else if (line.toLowerCase().contains("#endif")) {
-							NoPerviousEndIf++;
 						}
 						counter++;
 					}
@@ -104,23 +93,16 @@ class Feature {
 
 		}
 		if (totalLOC > 0) {
-			System.out.println("Feature Annotation: [" + featureName + "]");
+			System.out.println("Feature Annotation: [" + AnnotationName + "]");
 			System.out.println("LOF: " + totalLOC);
 			LOF = totalLOC;
-			System.out.println("NOFL: " + (annotationCounter + fileCounter) + "(Annotation: " + annotationCounter
+			System.out.println("SD: " + (annotationCounter + fileCounter) + "(Annotation: " + annotationCounter
 					+ "|file: " + fileCounter + ")");
-			NOFL = (annotationCounter + fileCounter);
+			SD = (annotationCounter + fileCounter);
 			annotation = annotationCounter;
 			System.out.println("TD: " + TD);
 			this.TD =TD; 
-			if (annotationCounter > 0) {
-				System.out.println("Avg. SD: " + totalSD / annotationCounter);
-				this.avgSD =  totalSD / annotationCounter;
-			} else {
 
-				System.out.println("Avg. SD: " + totalSD);
-				this.avgSD =  totalSD;
-			}
 			System.out.println("--------------End-----------------");
 		}
 		
@@ -138,8 +120,8 @@ class Feature {
 		return LOF;
 	}
 
-	public int getNOFL() {
-		return NOFL;
+	public int getSD() {
+		return SD;
 	}
 
 	public int getAnnotation() {
@@ -153,10 +135,4 @@ class Feature {
 	public int getTD() {
 		return TD;
 	}
-
-	public int getAvgSD() {
-		return avgSD;
-	}
-
-	
 }

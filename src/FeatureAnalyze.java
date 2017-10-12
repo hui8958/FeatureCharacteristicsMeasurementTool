@@ -26,7 +26,7 @@ public class FeatureAnalyze {
 	 *            the command line arguments
 	 */
 	static File folder;
-	String keyWordForIf = "#if";
+	String keyWordForIf;
 	ArrayList<Feature> features = new ArrayList<Feature>();
 
 	public FeatureAnalyze(String projectLocation, String keyWordForIf) {
@@ -36,10 +36,10 @@ public class FeatureAnalyze {
 
 		folder = new File(projectLocation);
 		this.keyWordForIf = keyWordForIf;
+		AddFeaturesToList(projectLocation);
 
-		AddFeaturesToList();
 		for (Feature feature : features) {
-			feature.analyiseCharacteristic(feature.name, feature.fileCounter, folder, keyWordForIf);
+			feature.analyiseCharacteristic(feature.name, feature.fileCounter, folder, this.keyWordForIf);
 		}
 
 		/**
@@ -49,10 +49,9 @@ public class FeatureAnalyze {
 
 	}
 
-	private void AddFeaturesToList() {
+	private void AddFeaturesToList(String projectLocation) {
 		int featureCounter = 0;
-		try (BufferedReader br = new BufferedReader(
-				new FileReader(new File(folder.getAbsolutePath() + "/.vp-project")))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(new File(projectLocation + "/.vp-project")))) {
 			for (String line; (line = br.readLine()) != null;) {
 				if (!line.toLowerCase().contains("Marlin".toLowerCase())) {
 					Feature feature;
