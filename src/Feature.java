@@ -9,7 +9,7 @@ class Feature {
 
 	String name ;
 	ArrayList<String> fileNames = new ArrayList<String> () ;
-	int LOF = 0;
+	int LoFC = 0;
 	int SD = 0;
 	int annotation = 0;
 	int fileCounter = 0;
@@ -76,7 +76,6 @@ class Feature {
 							pairBegin = 0;
 							pairEnd = 0;
 							BTD = false;
-							System.out.println("End Searching for TD");
 						}else if (BTD && (line.toLowerCase().contains("#if enable")||line.toLowerCase().contains("#ifdef"))&&!line.toLowerCase().contains(AnnotationName.toLowerCase())) {
 							 System.out.println(listOfFiles[i].getName()+" find TD: "+line); //Uncoment to show TD
 							TD++;
@@ -95,7 +94,7 @@ class Feature {
 		if (totalLOC > 0) {
 			System.out.println("Feature Annotation: [" + AnnotationName + "]");
 			System.out.println("LOF: " + totalLOC);
-			LOF = totalLOC;
+			LoFC = totalLOC;
 			System.out.println("SD: " + (annotationCounter + fileCounter) + "(Annotation: " + annotationCounter
 					+ "|file: " + fileCounter + ")");
 			SD = (annotationCounter + fileCounter);
@@ -116,8 +115,8 @@ class Feature {
 		return fileNames;
 	}
 
-	public int getLOF() {
-		return LOF;
+	public int getLoFC() {
+		return LoFC;
 	}
 
 	public int getSD() {

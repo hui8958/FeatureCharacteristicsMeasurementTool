@@ -33,9 +33,9 @@ public class Main {
 			sheet.addCell(label4);
 			for (int i = 0; i < featureAnalyze.features.size(); i++) {
 				Feature tempFeature = featureAnalyze.features.get(i);
-				if (tempFeature.getLOF() > 0) {
+				if (tempFeature.getLoFC() > 0) {
 					Label label6 = new Label(0, counter, tempFeature.name);
-					jxl.write.Number label7 = new jxl.write.Number(1, counter, tempFeature.getLOF());
+					jxl.write.Number label7 = new jxl.write.Number(1, counter, tempFeature.getLoFC());
 					jxl.write.Number label8 = new jxl.write.Number(2, counter, tempFeature.getSD());
 					jxl.write.Number label9 = new jxl.write.Number(3, counter, tempFeature.getTD());
 
