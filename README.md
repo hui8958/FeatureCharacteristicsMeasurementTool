@@ -1,14 +1,16 @@
 # FeatureCharacteristicsMeasurementTool
-This tool is used for analyzing feature characteristics.
+This tool made for analyzing feature characteristics in Marlin.
 
 # Usage
-Replace the code in Main.java to a proper location
+Clone the code from [https://github.com/hui8958/Marlin/tree/MarlinFeatureAnnotations](https://github.com/hui8958/Marlin/tree/MarlinFeatureAnnotations)
+
+Replace the code below in Main.java to the "Marlin/Marlin" folder location.
 ```sh
 String location = "D:/..../Marlin/Marlin";
 ```
-Run Main.java
+Run Main.java.
 
-The result will be saved into a excel file and automatically opened.
+The result will be saved into a excel file and the file will be automatically opened.
 
 
    [dill]: <https://github.com/joemccann/dillinger>
