@@ -26,7 +26,7 @@ public class FeatureAnalyze {
 	 *            the command line arguments
 	 */
 	static File folder;
-	String keyWordForIf = "#if";
+	String keyWordForIf;
 	ArrayList<Feature> features = new ArrayList<Feature>();
 
 	public FeatureAnalyze(String projectLocation, String keyWordForIf) {
@@ -36,10 +36,10 @@ public class FeatureAnalyze {
 
 		folder = new File(projectLocation);
 		this.keyWordForIf = keyWordForIf;
-
+		System.out.println("keyWordForIf: "+this.keyWordForIf);
 		AddFeaturesToList();
 		for (Feature feature : features) {
-			feature.analyiseCharacteristic(feature.name, feature.fileCounter, folder, keyWordForIf);
+			feature.analyiseCharacteristic(feature.name, feature.fileCounter, folder, this.keyWordForIf);
 		}
 
 		/**
