@@ -4,7 +4,7 @@ This tool made for analyzing feature characteristics in Marlin.
 # Usage
 Clone the code from [https://github.com/hui8958/Marlin/tree/MarlinFeatureAnnotations](https://github.com/hui8958/Marlin/tree/MarlinFeatureAnnotations)
 
-Replace the code below in Main.java to the "Marlin/Marlin" folder location.
+Replace the code below in Main.java with the "Marlin/Marlin" folder location.
 ```sh
 String location = "D:/..../Marlin/Marlin";
 ```
